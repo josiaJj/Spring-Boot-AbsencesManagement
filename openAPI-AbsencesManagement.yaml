@@ -1,0 +1,159 @@
+openapi: 3.0.0
+info:
+  title: Gestion d'absences - STD22064
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+paths:
+  '/students/ListOfAllStudents':
+    get:
+      summary: Get list of all students with total number of student absences
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                message: Http message SUCCES
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: An error occurred
+                
+  '/students/ListOfStudents':
+    get: 
+      summary : Collect students based on a minimum number of absences
+      parameters:
+        - name: minAbsences
+          in: query
+          description: Minimum number of absences
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                message: Http message SUCCES
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: An error occurred
+                
+  '/students/add':
+    post:
+      summary : add a new student
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                std:
+                  type: string
+                firstname:
+                  type: string
+                lastname:
+                  type: string
+                email:
+                  type: string
+                idGroup:
+                  type: integer
+              required:
+                - std
+                - lastname
+                - email
+                - idGroup
+            example:
+              std: 
+                "STD22087"
+              firstname: 
+                "Kiala"
+              lastname: 
+                "Soa"
+              email: 
+                "hei.soa@gmail.com"
+              idGroup: 
+                5   
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                message: Http message SUCCES
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: An error occurred 
+  
+  '/students/{std}/update-group':
+    put: 
+      summary: Change student group
+      parameters:
+        - in: path
+          name: std
+          required: true
+          schema:
+            type: 
+              string
+          example: 
+            std: 
+              "STD22087"
+        - in: query
+          name: newGroup
+          description: New student group 
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                message: Http message SUCCES
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: An error occurred      
+                
+  '/students/delete/{std}':
+    delete:
+      summary: Delete Student by id
+      parameters:
+        - in: path
+          name: std
+          required: true
+          schema:
+            type: 
+              string
+          example: 
+            std: 
+              "STD22087"
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                message: Http message SUCCES
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: An error occurred
+            
+   
