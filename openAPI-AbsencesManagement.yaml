@@ -2,11 +2,18 @@ openapi: 3.0.0
 info:
   title: Gestion d'absences - STD22064
   version: 1.0.0
+tags:
+  - name: Students
+  - name: Groups
+  - name: Subjects
+  - name: Courses
 servers:
   - url: http://localhost:8080
 paths:
   '/students/ListOfAllStudents':
     get:
+      tags: 
+        - Students
       summary: Get list of all students with total number of student absences
       responses:
         '200':
@@ -24,6 +31,8 @@ paths:
                 
   '/students/ListOfStudents':
     get: 
+      tags: 
+        - Students
       summary : Collect students based on a minimum number of absences
       parameters:
         - name: minAbsences
@@ -48,6 +57,8 @@ paths:
                 
   '/students/add':
     post:
+      tags: 
+        - Students
       summary : add a new student
       requestBody:
         required: true
@@ -98,6 +109,8 @@ paths:
   
   '/students/{std}/update-group':
     put: 
+      tags: 
+        - Students
       summary: Change student group
       parameters:
         - in: path
@@ -131,6 +144,8 @@ paths:
                 
   '/students/delete/{std}':
     delete:
+      tags: 
+        - Students
       summary: Delete Student by id
       parameters:
         - in: path
@@ -155,5 +170,432 @@ paths:
             application/json:
               example:
                 message: An error occurred
+                
+  '/groups/ListOfAllGroups':
+    get:
+      tags: 
+        - Groups
+      summary: Get list of all groups with total absences
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                message: Http message SUCCES
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: An error occurred
+                
+  '/groups/ListOfGroupsFromDate':
+    get:
+      tags: 
+        - Groups
+      summary: List of groups with the number of absences of the date
+      parameters: 
+        - in: query
+          name: date
+          description: Date 
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                message: Http message SUCCES
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: An error occurred  
+
+  '/groups/add':
+    post:
+      tags: 
+        - Groups
+      summary: Add a new group
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                codeGroup:
+                  type: string
+              required:
+                - codeGroup
+            example:
+              codeGroup: 
+                "H4" 
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                message: Http message SUCCES
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: An error occurred  
+
+  '/{idGroup}/update-code':
+    put: 
+      tags: 
+        - Groups
+      summary: Update the group code
+      parameters: 
+        - in: path
+          name: idGroup
+          required: true
+          schema:
+            type: 
+              integer
+          example: 
+            idGroup: 
+              1
+        - in: query
+          name: newCode
+          required: true
+          schema: 
+            type: 
+              string
+          example: 
+            newGroup: 
+              "H5"
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                message: Http message SUCCES
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: An error occurred
+
+  '/groups/delete/{codeGroup}':
+    delete: 
+      tags: 
+        - Groups
+      summary: Delete a group by his code
+      parameters: 
+        - in: path
+          name: codeGroup
+          required: true
+          schema: 
+            type: 
+              string
+          example: 
+            codeGroup:
+              "H5"
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                message: Http message SUCCES
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: An error occurred
+                
+  '/subjects/ListOfSubjects':
+    get: 
+      tags: 
+        - Subjects
+      summary: List of all subjects
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                message: Http message SUCCES
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: An error occurred  
+
+  '/subjects/SubjectByMaxAbsentsStudents':
+    get: 
+      tags: 
+        - Subjects
+      summary: The subject that had the maximum number of absences
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                message: Http message SUCCES
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: An error occurred  
+
+  '/subjects/add':
+    post: 
+      tags: 
+        - Subjects
+      summary: Add a new subject
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                idSubject:
+                  type: string
+                name: 
+                  type: string
+              required:
+                - idSubject
+                - name 
+            example:
+              idSubject: 
+                "PROG4" 
+              name:
+                "Programmation S4"
+      responses:
+        '200':
+            description: Successful response
+            content:
+              application/json:
+                example:
+                  message: Http message SUCCES
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: An error occurred  
+
+  '/subjects/{idSubject}/update-name':
+    put: 
+      tags: 
+        - Subjects
+      summary: Update subject name
+      parameters: 
+        - in: path
+          name: idSubject
+          required: true
+          schema: 
+            type: 
+              string
+          example: 
+            idSubject:
+              "WEB1"
+        - in: query
+          name: newName
+          required: true
+          schema:
+            type: string
+          example: 
+            newName: 
+              "Nouveau nom de Web1"
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                message: Http message SUCCES
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: An error occurred  
+          
+  '/subjects/delete/{idSubject}':
+    delete: 
+      tags: 
+        - Subjects
+      summary: Delete a subject
+      parameters: 
+        - in: path
+          name: idSubject
+          required: true
+          schema: 
+            type: string
+          example: 
+            idSubject: 
+              "PROG1"
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                message: Http message SUCCES
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: An error occurred  
             
-   
+  '/courses/ListOfAllCourses': 
+    get: 
+      tags: 
+        - Courses
+      summary: List of all courses with the number of absences
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                message: Http message SUCCES
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: An error occurred  
+
+  '/courses/CourseByMaxAbsentStudents':
+    get: 
+      tags: 
+        - Courses
+      summary: Course that had the maximum number of absences
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                message: Http message SUCCES
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: An error occurred  
+
+  '/courses/add':
+    post: 
+      tags: 
+        - Courses
+      summary: Add a new course
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                idCourse:
+                  type: integer
+                dateCourse: 
+                  type: string
+                idSubject: 
+                  type: string
+              required:
+                - idCourse
+                - dateCourse 
+                - idSubject
+            example:
+              idCourse: 
+                50 
+              dateCourse:
+                "2023-08-30"
+              idSubject: 
+                "PROG4"
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                message: Http message SUCCES
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: An error occurred  
+
+  '/courses/{idCourse}/update-date':
+    put: 
+      tags: 
+        - Courses
+      summary: Update the date of the course
+      parameters: 
+        - in: path
+          name: idCourse
+          required: true
+          schema: 
+            type: integer
+          example: 
+            idCourse: 8
+        - in: query
+          name: newDate
+          required: true
+          schema: 
+            type: string
+          example: 
+            newDate: "2023-09-02"
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                message: Http message SUCCES
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: An error occurred  
+
+  '/courses/delete/{idCourse}':
+    delete: 
+      tags: 
+        - Courses
+      summary: Delete a course
+      parameters: 
+        - in: path
+          name: idCourse
+          required: true
+          schema: 
+            type: integer
+          example: 
+            idCourse: 10
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              example:
+                message: Http message SUCCES
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              example:
+                message: An error occurred 
+
